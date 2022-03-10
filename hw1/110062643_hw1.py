@@ -1,11 +1,12 @@
 import sys
 from apyori import apriori # for test
 from collections import Counter
-
+from itertools import combinations
 
 def apriori_myself(transations, min_support):
     association_results = []
     init = []
+    results = Counter()
 
     for transation in transations:
         for t in transation:
@@ -24,24 +25,25 @@ def apriori_myself(transations, min_support):
         for transation in transations:
             if i in transation:
                 c[i] += 1
-    print('C1:')
-    for i in c:
-        print(str(i)+ ':' + str(c[i]))
-    print()
+    # print('C1:')
+    # for i in c:
+    #     print(str(i)+ ':' + str(c[i]))
+    # print()
 
     l = Counter()
     for i in c:
         if c[i] >= s:
             l[frozenset([i])] += c[i]
 
-    print('L1:')
+    # print('L1:')
     for i in l:
-        print(str(i) + ':' + str(l[i]))
+        if l[i]/len(transations) >= min_support:
+            results[str(list(i))] = '%.04f'%(l[i]/len(transations))
+        # print(str(list(i)) + ':' + str(l[i]))
     print()
 
     pl = 1
     pos = 1
-
     for count in range(2, 1000):
         nc = set()
         temp = list(l)
@@ -59,19 +61,21 @@ def apriori_myself(transations, min_support):
                 temp = set(transation)
                 if i.issubset(temp):
                     c[i] += 1
-        print('C' + str(count) + ':')
-        for i in c:
-            print(str(i) + ':' +str(c[i]))
-        print()
+        # print('C' + str(count) + ':')
+        # for i in c:
+        #     print(str(list(i)) + ':' +str(c[i]))
+        # print()
 
         l = Counter()
         for i in c:
             if(c[i] >= s):
                 l[i]+=c[i]
-        print("L"+str(count)+":")
+        # print("L"+str(count)+":")
         for i in l:
-            print(str(list(i))+": "+str(l[i]))
-        print()
+            if l[i]/len(transations) >= min_support:
+                results[str(list(i))] = '%.04f'%(l[i]/len(transations))
+            # print(str(list(i))+": "+str(l[i]))
+        # print()
 
         if len(l) == 0:
             break
@@ -79,26 +83,31 @@ def apriori_myself(transations, min_support):
         pl = l
         pos = count
 
-    print("Result: ")
-    print("L"+str(pos)+":")
-    for i in pl:
-        print(str(list(i))+": "+str(pl[i]))
-    print()
+    # print("Result: ")
+    # print("L"+str(pos)+":")
+    # for i in pl:
+    #     print(str(list(i))+": "+str(pl[i]))
+    # print()
 
-    return association_results
+    print('Results length: ' + str(len(results)))
+    # print('Result')
+    # print(results)
+
+    return results
 
 
 # read data
-data = []
-results = []
+transations = []
+results = Counter()
+output = Counter()
 with open(sys.argv[2], 'r', encoding='utf-8') as f:
     for line in f.readlines():
         line = line.rstrip().split(',')
-        data.append(line)
+        transations.append(line)
 
 mim_support = float(sys.argv[1])
 
-results = apriori_myself(data, mim_support)
+results = apriori_myself(transations, mim_support)
 # association_rules = apriori(data, min_support=float(sys.argv[1]))
 # association_results = list(association_rules)
 
@@ -109,7 +118,19 @@ results = apriori_myself(data, mim_support)
 #     support = float(item[1])
 #     results.append(items + ':' + '%.04f'%support)
 
+for r in results:
+    s = results[r]
+    r = r.replace('[', '')
+    r = r.replace(']', '')
+    r = r.replace('\'', '')
+    r = ','.join(r.split(','))
+    r = r.replace(' ', '')
+    output[r] = s
+
+results = sorted(output.items())
+
 # output file
 with open(sys.argv[3], 'w', encoding='utf-8') as f:
     for result in results:
-        f.write(result+'\n')
+        print(result[0]+':'+result[1])
+        f.write(result[0]+':'+result[1])
