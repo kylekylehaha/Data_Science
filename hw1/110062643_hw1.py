@@ -132,5 +132,5 @@ results = sorted(output.items())
 # output file
 with open(sys.argv[3], 'w', encoding='utf-8') as f:
     for result in results:
-        print(result[0]+':'+result[1])
-        f.write(result[0]+':'+result[1])
+        # print(result[0]+':'+result[1])
+        f.write(result[0]+':'+result[1]+'\n')
