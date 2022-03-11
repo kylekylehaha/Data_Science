@@ -1,7 +1,8 @@
 import sys
-from apyori import apriori # for test
+# from apyori import apriori # for test
 from collections import Counter
 from itertools import combinations
+MAX_TRANSATIONS = 1000
 
 def apriori_myself(transations, min_support):
     association_results = []
@@ -17,6 +18,8 @@ def apriori_myself(transations, min_support):
     init = [int(x) for x in init]
     init = sorted(init)
     init = [str(x) for x in init]
+
+    print("Finish init")
 
     s = int(min_support * len(init))    # mim support count
 
@@ -40,11 +43,11 @@ def apriori_myself(transations, min_support):
         if l[i]/len(transations) >= min_support:
             results[str(list(i))] = '%.04f'%(l[i]/len(transations))
         # print(str(list(i)) + ':' + str(l[i]))
-    print()
 
     pl = 1
     pos = 1
-    for count in range(2, 1000):
+    for count in range(2, MAX_TRANSATIONS):
+        print("count: {}".format(count))
         nc = set()
         temp = list(l)
         for i in range(0, len(temp)):
@@ -90,8 +93,6 @@ def apriori_myself(transations, min_support):
     # print()
 
     print('Results length: ' + str(len(results)))
-    # print('Result')
-    # print(results)
 
     return results
 
