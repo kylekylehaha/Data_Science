@@ -1,11 +1,12 @@
+import os
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
 # Load data
 # 為了處理方便，把 'train.csv' 和 'test.csv' 合併起來，'test.csv'的 Weather 欄位用 0 補起來。
-df = pd.read_csv('data/train.csv')
-df_test = pd.read_csv('data/test.csv')
+df = pd.read_csv(os.path.join('data', 'train.csv'))
+df_test = pd.read_csv(os.path.join('data', 'test.csv'))
 df_test['Label'] = np.zeros((len(df_test),))
 
 # 以 train_end_idx 作為 'train.csv' 和 'test.csv' 分界列，
@@ -13,28 +14,28 @@ train_end_idx = len(df)
 df = pd.concat([df, df_test], sort=False)
 
 # 將非數值欄位拿掉
-# df = df.drop(columns = [col for col in df.columns if df[col].dtype == np.object])
+df = df.drop(columns = [col for col in df.columns if df[col].dtype == np.object])
 
-# or encode object feature
-object_columns = [col for col in df.columns if df[col].dtype == np.object]
-from sklearn.preprocessing import LabelEncoder
-labelencoder = LabelEncoder()
-for object_col in object_columns:
-    df[object_col] = labelencoder.fit_transform(df[object_col])
+# # or encode object feature
+# object_columns = [col for col in df.columns if df[col].dtype == np.object]
+# from sklearn.preprocessing import LabelEncoder
+# labelencoder = LabelEncoder()
+# for object_col in object_columns:
+#     df[object_col] = labelencoder.fit_transform(df[object_col])
 
 # Fill missing value
-# 將 missing value 補 median
+# # 將 missing value 補 median
 # for col in df.columns:
 #     median = df[col].median()
 #     df[col] = df[col].fillna(median)
 # df_imputed = df.reset_index(drop=True).drop(columns=['Label'])
 
-# or use KNN imputer to fill missing value
+# # or use KNN imputer to fill missing value
 # from sklearn.impute import KNNImputer
 # imputer = KNNImputer(n_neighbors=2)
 # df_imputed = pd.DataFrame(imputer.fit_transform(df.drop(columns=['Label'])))
 
-# # or use Missing forest
+# or use Missing forest
 import sys
 import sklearn.neighbors._base
 sys.modules['sklearn.neighbors.base'] = sklearn.neighbors._base
@@ -77,10 +78,11 @@ Ada_clf = AdaBoostClassifier(n_estimators=100, random_state=0)
 Ada_clf.fit(X_train, y_train)
 
 y_pred_Ada = Ada_clf.predict(X_val)
-print("Adaboost-encode_MF_normalization")
+output = 'drop_norm.csv'
+print(output)
 print('Accuracy: %f' % accuracy_score(y_val, y_pred_Ada))
 print('f1-score: %f' % f1_score(y_val, y_pred_Ada))
 
 ans_pred = Ada_clf.predict(X_test)
 df_sap = pd.DataFrame(ans_pred.astype(int), columns = ['Label'])
-df_sap.to_csv('result/AdaBoost/encode_MF_normalization.csv',  index_label = 'Id')
+df_sap.to_csv(os.path.join('result', output),  index_label = 'Id')
