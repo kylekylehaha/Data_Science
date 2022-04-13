@@ -1,0 +1,38 @@
+encode_median_norm.csv
+Accuracy: 0.819255
+f1-score: 0.352522
+
+==========================
+encode_KNN_norm.csv
+Accuracy: 0.802190
+f1-score: 0.380401
+
+-----------------
+encode_KNN_norm.csv
+Accuracy: 0.797924
+f1-score: 0.360774
+
+-----------------
+encode_KNN_norm.csv
+Accuracy: 0.802759
+f1-score: 0.372
+
+============================
+encode_MF_norm.csv
+Accuracy: 0.811718
+f1-score: 0.395434
+
+============================
+drop_median_norm.csv
+Accuracy: 0.792662
+f1-score: 0.332418
+
+=============================
+drop_KNN_norm.csv
+Accuracy: 0.780006
+f1-score: 0.380457
+
+=============================
+drop_MF_norm.csv
+Accuracy: 0.788538
+f1-score: 0.420725
