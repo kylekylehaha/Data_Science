@@ -115,10 +115,16 @@ def aug_feature_dropout(input_feat, drop_percent = 0.2):
     # aug_input_feat[:, drop_idx] = 0
 
     # experiment1: drop from first
+    # aug_input_feat = copy.deepcopy((input_feat.squeeze(0)))
+    # drop_feat_num = int(aug_input_feat.shape[1] * drop_percent)
+    # drop_idx = [i for i in range(drop_feat_num)]
+    # aug_input_feat[:, drop_idx] = 0
+
+    # experiement2: drop from back
+    feat_num = aug_input_feat.shape[1]
     aug_input_feat = copy.deepcopy((input_feat.squeeze(0)))
     drop_feat_num = int(aug_input_feat.shape[1] * drop_percent)
-    # drop_idx = random.sample([i for i in range(aug_input_feat.shape[1])], drop_feat_num)
-    drop_idx = [i for i in range(drop_feat_num)]
+    drop_idx = [feat_num - i for i in range(drop_feat_num)]
     aug_input_feat[:, drop_idx] = 0
 
     return aug_input_feat
