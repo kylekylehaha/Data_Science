@@ -109,10 +109,10 @@ def aug_feature_dropout(input_feat, drop_percent = 0.2):
     # the output feature shoud be of dimension "(1-p)*(original dimension)" for each node
 
     # Paper methods: randomly dropout feature
-    # aug_input_feat = copy.deepcopy((input_feat.squeeze(0))) # deepcopy: 完全複製一個獨立的出來後，透過 squeeze 變成 2x2 matrix
-    # drop_feat_num = int(aug_input_feat.shape[1] * drop_percent)
-    # drop_idx = random.sample([i for i in range(aug_input_feat.shape[1])], drop_feat_num)
-    # aug_input_feat[:, drop_idx] = 0
+    aug_input_feat = copy.deepcopy((input_feat.squeeze(0))) # deepcopy: 完全複製一個獨立的出來後，透過 squeeze 變成 2x2 matrix
+    drop_feat_num = int(aug_input_feat.shape[1] * drop_percent)
+    drop_idx = random.sample([i for i in range(aug_input_feat.shape[1])], drop_feat_num)
+    aug_input_feat[:, drop_idx] = 0
 
     # experiment1: drop from first
     # aug_input_feat = copy.deepcopy((input_feat.squeeze(0)))
@@ -128,21 +128,21 @@ def aug_feature_dropout(input_feat, drop_percent = 0.2):
     # aug_input_feat[:, drop_idx] = 0
 
     # experiment3: drop less feature
-    aug_input_feat = copy.deepcopy((input_feat.squeeze(0)))
-    drop_feat_num = int(aug_input_feat.shape[1] * drop_percent)
-    # print(type(aug_input_feat))
-    ff = aug_input_feat.numpy()
-    # print(type(ff))
-    feat_num_each_row = list((ff != 0).sum(0))
-    feat_num_idx = feat_num_each_row.copy()
-    drop_idx = []
-    # print(ff.shape)
-    # print(feat_num_each_row.shape)
-    for _ in range(drop_feat_num):
-        min_num = min(feat_num_each_row)
-        drop_idx.append(feat_num_idx.index(min_num))
-        feat_num_each_row.remove(min_num)
-    aug_input_feat[:, drop_idx] = 0
+    # aug_input_feat = copy.deepcopy((input_feat.squeeze(0)))
+    # drop_feat_num = int(aug_input_feat.shape[1] * drop_percent)
+    # # print(type(aug_input_feat))
+    # ff = aug_input_feat.numpy()
+    # # print(type(ff))
+    # feat_num_each_row = list((ff != 0).sum(0))
+    # feat_num_idx = feat_num_each_row.copy()
+    # drop_idx = []
+    # # print(ff.shape)
+    # # print(feat_num_each_row.shape)
+    # for _ in range(drop_feat_num):
+    #     min_num = min(feat_num_each_row)
+    #     drop_idx.append(feat_num_idx.index(min_num))
+    #     feat_num_each_row.remove(min_num)
+    # aug_input_feat[:, drop_idx] = 0
 
     return aug_input_feat
 
