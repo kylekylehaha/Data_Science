@@ -144,6 +144,19 @@ def aug_feature_dropout(input_feat, drop_percent = 0.2):
     #     feat_num_each_row.remove(min_num)
     # aug_input_feat[:, drop_idx] = 0
 
+    # experiment4: drop most feature
+    aug_input_feat = copy.deepcopy((input_feat.squeeze(0)))
+    drop_feat_num = int(aug_input_feat.shape[1] * drop_percent)
+    ff = aug_input_feat.numpy()
+    feat_num_each_row = list((ff != 0).sum(0))
+    feat_num_idx = feat_num_each_row.copy()
+    drop_idx = []
+    for _ in range(drop_feat_num):
+        max_num = max(feat_num_each_row)
+        drop_idx.append(feat_num_idx.index(max_num))
+        feat_num_each_row.remove(max_num)
+    aug_input_feat[:, drop_idx] = 0
+
     return aug_input_feat
 
 
