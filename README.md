@@ -15,3 +15,8 @@ Also, we implement [FP growth](https://towardsdatascience.com/fp-growth-frequent
 ```
 python3 fp_growth.py [min_support][input_file][output_file]
 ```
+
+## HW4: Graph Adverisal Attack
+We implement Nettack.
+
+- How to work?: read README.md in hw4 folder
