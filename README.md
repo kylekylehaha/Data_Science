@@ -16,6 +16,13 @@ Also, we implement [FP growth](https://towardsdatascience.com/fp-growth-frequent
 python3 fp_growth.py [min_support][input_file][output_file]
 ```
 
+---
+
+## HW3
+We implement global optimization. Use CMA-ES paper methods
+
+---
+
 ## HW4: Graph Adverisal Attack
 We implement Nettack.
 
