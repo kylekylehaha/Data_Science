@@ -1,5 +1,4 @@
 # 2022 NTHU CSIE Spring Data_Science
-NTHU 2022 Data Science
 
 ## HW1: Find Frequent Patterns
 We implement [Apriori algo](https://www.geeksforgeeks.org/apriori-algorithm/amp/) to find frequent patterns.
